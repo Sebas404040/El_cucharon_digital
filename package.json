@@ -1,0 +1,27 @@
+{
+  "name": "el_cucharon_digital",
+  "version": "1.0.0",
+  "description": "the best recippes aplication",
+  "main": "main",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebas404040/El_cucharon_digital.git"
+  },
+  "keywords": [
+    "recipes",
+    "food"
+  ],
+  "author": "Joan Sebastian Gómez Serrano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sebas404040/El_cucharon_digital/issues"
+  },
+  "homepage": "https://github.com/Sebas404040/El_cucharon_digital#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mongodb": "^6.20.0"
+  }
+}
