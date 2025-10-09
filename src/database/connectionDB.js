@@ -79,10 +79,10 @@ class Database {
     }
 
     async obtenerBD() {
-        if (!db) {
+        if (!this.db) {
             throw new Error("Base de datos no conectada")
         }
-        return db;
+        return this.db;
     }
 }
 
