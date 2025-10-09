@@ -3,16 +3,16 @@ import { param, body } from 'express-validator';
 export const crearCliente_DTO = [
     body("nombre").isString().trim().notEmpty().withMessage("Nombre no valido"),
     body("email").isEmail().trim().notEmpty().withMessage("Email invalido"),
-    body("telefono").isInt({min: 1000000000}).notEmpty().trim().withMessage("Telefono invalido"),
-    body("fechaRegistro").isDate().notEmpty.trim().withMessage("Fecha invalida"),
-    body("activo").isBoolean().notEmpty().trim().withMessage("Activo debe ser un valor True/False")
+    body("telefono").isString().trim().notEmpty().isLength({min: 10, max: 15}).withMessage("Telefono invalido"),
+    body("fechaRegistro").isISO8601().toDate().withMessage("Fecha invalida, debe estar en formato YYYY-MM-DD"),
+    body("activo").isBoolean().withMessage("Activo debe ser un valor true/false")
 ]
 
 export const actualizarCliente_DTO = [
-    param("id").isInt({min: 1}).notEmpty().withMessage("ID de creación no valido"),
+    param("nombre").isString().notEmpty().withMessage("El nombre en la URL no puede estar vacío"),
     body("nombre").optional().isString().trim().notEmpty().withMessage("Nombre no valido"),
-    body("email").optional().isDate().notEmpty.trim().withMessage("Fehca invalida"),
-    body("telefono").optional().isInt({min: 1000000000}).notEmpty.trim().withMessage("Fehca invalida"),
-    body("fechaRegistro").optional().isDate().notEmpty.trim().withMessage("Fecha invalida"),
-    body("activo").optional().isBoolean().notEmpty.trim().withMessage("Activo debe ser un valor True/False")
+    body("email").optional().isEmail().trim().notEmpty().withMessage("Email invalido"),
+    body("telefono").optional().isString().trim().notEmpty().isLength({min: 10, max: 15}).withMessage("Telefono invalido"),
+    body("fechaRegistro").optional().isISO8601().toDate().withMessage("Fecha invalida, debe estar en formato YYYY-MM-DD"),
+    body("activo").optional().isBoolean().withMessage("Activo debe ser un valor true/false")
 ]
