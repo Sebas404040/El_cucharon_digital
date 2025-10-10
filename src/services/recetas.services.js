@@ -1,15 +1,25 @@
+// Importación de base de datos y ObjectId 
 import database from "../database/connectionDB.js";
 import { ObjectId } from "mongodb";
 
+// Nombre de la colección
 const COLECCION_RECETAS = "recetas";
 
+// Función para obtener recetas
 export async function obtenerRecetas() {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS);
     return await collection.find().toArray();
 }
 
+// Función para crear una receta
 export async function crearReceta(datos) {
+
+    // Se desestrucutran los datos
     const {id_cliente, nombre, descripcion, nivel, ingredientes} = datos
+    
+    // Se construye la receta
     const receta = {
         id_cliente: new ObjectId(id_cliente),
         nombre,
@@ -17,24 +27,35 @@ export async function crearReceta(datos) {
         nivel,
         ingredientes
     }
+
+    // Se realiza el guardado en base de datos
     const collection = await database.getCollection(COLECCION_RECETAS);
     await collection.insertOne(receta);
     return ({Message: "Receta creada con exito"})
 }
 
+// Función para obtener una receta por su nombre
 export async function obtenerReceta(nombre) {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS);
+    
+    // Se captura como resultado la busqueda de la receta
     const receta = await collection.findOne({nombre: nombre});
     if (!receta) throw new Error("Receta no encontrada");
     return receta;
 }
 
+// Función para actualizar una receta
 export async function actualizarReceta(nombre, datos) {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS);
 
-    
+    // Se borran los datos para evitar pproblemas con MONGODB 
     delete datos._id;
 
+    // Si los datos están
     if (datos.id_cliente) {
         datos.id_cliente = new ObjectId(datos.id_cliente);
     }
