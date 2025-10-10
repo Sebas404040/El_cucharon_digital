@@ -59,60 +59,112 @@ export async function actualizarReceta(nombre, datos) {
     if (datos.id_cliente) {
         datos.id_cliente = new ObjectId(datos.id_cliente);
     }
+
+    // se captura en resultado
     const resultado = await collection.updateOne({nombre: nombre}, {$set: datos});
+
+    // Si se modificó 
     if(resultado.matchedCount === 0) throw new Error("Receta no encontrada");
     return {Message: "Receta actualizada con exito"}
 }
 
+// Función para eliminar una receta
 export async function eliminarReceta(nombre) {
+
+    // Se obtiene la colección 
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se captura el resultado tras la eliminaciòn
     const resultado = await collection.deleteOne({nombre: nombre});
+
+    // Si no hubo una eliminaciòn se lanza un error
     if (resultado.deletedCount === 0) throw new Error("Receta no encontrada");
     return {message: "Receta eliminada con exito"}; 
 }
 
+// Función ara obtener recetas por cliente
 export async function obtenerRecetasPorCliente(id_cliente) {
+
+    // Se obtiene la colección 
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se obtienen las recetas
     const recetas = await collection.find({id_cliente: new ObjectId(id_cliente)}).toArray();
+
+    // si no se obtienen recetas se lanza un error 
     if (recetas.length === 0) throw new Error("No se encontraron recetas para el cliente especificado");
     return recetas;
 }
 
+// Función ara agregar ingredientes
 export async function agregarIngredientes(nombreReceta, nuevosIngredientes) {
+
+    // Se obtienen las colecciones
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se obtiene el resultado al haber realizado la actualización
     const resultado = await collection.updateOne(
+
+        // Mediante el operador $push se agrega el ingrediente
         { nombre: nombreReceta },
         { $push: { ingredientes: { $each: nuevosIngredientes } } }
     );
+
+    // Si se realizó la actualización se lanza un error
     if (resultado.matchedCount === 0) throw new Error("Receta no encontrada para agregar ingredientes");
     return { message: "Ingredientes agregados con éxito" };
 }
 
+// Función para ver ingredientes
 export async function verIngredientes(nombreReceta) {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se obtiene una receta en base a la receta
     const receta = await collection.findOne({ nombre: nombreReceta });
+
+    // Si la receta no se encuentra se lanza un error
     if (!receta) throw new Error("Receta no encontrada");
     return receta.ingredientes;
 }
 
+// Función para eliminar un ingrediente
 export async function eliminarIngrediente(nombreReceta, nombreIngrediente) {
+
+    // Se obtiene la colección 
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se obtiene el resultado tras la actualización
     const resultado = await collection.updateOne(
+
+        // Se busca el nombre de la receta y mediante el operador $pull se elimina el ingrediente
         { nombre: nombreReceta },
         { $pull: { ingredientes: { nombre: nombreIngrediente } } }
     );
+
+    // Si la receta no se encuentra se lanza un error
     if (resultado.matchedCount === 0) {
         throw new Error("Receta no encontrada");
     }
+
+    // Si en el resultado no se modifica nada se lanza un error
     if (resultado.modifiedCount === 0) {
         throw new Error("No se pudo eliminar el ingrediente. Verifique que la receta y el ingrediente existan.");
     }
     return { message: "Ingrediente eliminado con éxito" };
 }
 
+// Función para buscar un ingrediente por receta 
 export async function buscarIngredientePorReceta(nombreReceta, nombreIngrediente) {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS)
+
+    // Se obtiene la receta tras la consulta
     const receta = await collection.findOne(
+
+        // Se busca la receta y se proyectan sus ingredientes
         { nombre: nombreReceta },
         { 
             projection: { 
@@ -120,16 +172,24 @@ export async function buscarIngredientePorReceta(nombreReceta, nombreIngrediente
             } 
         }
     );
+
+    // Si no se encuentra la receta o los ingredientes
     if (!receta || !receta.ingredientes || receta.ingredientes.length === 0) {
         throw new Error("Ingrediente no encontrado en la receta especificada.");
     }
     return receta.ingredientes[0];
 }
 
+// Función ara buscar recetas por ingrediente
 export async function buscarRecetasPorIngrediente(nombreIngrediente) {
+
+    // Se obtiene la colección
     const collection = await database.getCollection(COLECCION_RECETAS);
+
+    // Se obtienen las recetas tras buscar las recetas or ingrediente
     const recetas = await collection.find({ 'ingredientes.nombre': nombreIngrediente }).toArray();
 
+    // Si no se encuentran recetas se lanza un error
     if (recetas.length === 0) {
         throw new Error(`No se encontraron recetas que contengan el ingrediente: ${nombreIngrediente}`);
     }
