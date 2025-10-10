@@ -1,5 +1,11 @@
+// Imortación de funciones
 import { crearReceta, obtenerRecetas, obtenerReceta, actualizarReceta, eliminarReceta, obtenerRecetasPorCliente, agregarIngredientes, verIngredientes, eliminarIngrediente, buscarIngredientePorReceta, buscarRecetasPorIngrediente } from "../services/recetas.services.js";
 
+/*
+CREACIÓN DE CONTROLADORES 
+*/
+
+// Controlador para la creación de una receta 
 export async function crearReceta_controller(req, res) {
     try {
         const datos = req.body
@@ -10,6 +16,7 @@ export async function crearReceta_controller(req, res) {
     }
 }
 
+// Controlador para la obtención de recetas
 export async function obtenerRecetas_controller(req, res) {
     try {
         const recetas = await obtenerRecetas()
@@ -19,6 +26,7 @@ export async function obtenerRecetas_controller(req, res) {
     }
 }
 
+// Controlador para la obtención de una receta
 export async function obtenerReceta_controller(req, res) {
     try {
         const nombre = req.params.nombre;
@@ -33,6 +41,7 @@ export async function obtenerReceta_controller(req, res) {
     }
 }
 
+// Controlador para la actualización de una receta
 export async function actualizarReceta_controller(req, res) {
     try {
         const nombre = req.params.nombre
@@ -44,6 +53,7 @@ export async function actualizarReceta_controller(req, res) {
     }
 }
 
+// Controlador para agregar ingredientes a una receta
 export async function agregarIngredientes_controller(req, res) {
     try {
         const nombreReceta = req.params.nombre;
@@ -55,6 +65,7 @@ export async function agregarIngredientes_controller(req, res) {
     }
 }
 
+// Controlador para buscar recetas or ingrediente
 export async function buscarRecetasPorIngrediente_controller(req, res) {
     try {
         const nombreIngrediente = req.params.nombreIngrediente;
@@ -65,6 +76,7 @@ export async function buscarRecetasPorIngrediente_controller(req, res) {
     }
 }
 
+// Controlador apra eliminar una receta
 export async function eliminarReceta_controller(req, res) {
     try {
         const nombre = req.params.nombre
@@ -75,6 +87,7 @@ export async function eliminarReceta_controller(req, res) {
     }
 }
 
+// Controlador para la obtención de recetas por cliente 
 export async function obtenerRecetasPorCliente_controller(req, res) {
     try {
         const id_cliente = req.params.id_cliente
@@ -85,6 +98,7 @@ export async function obtenerRecetasPorCliente_controller(req, res) {
     }
 }
 
+// Controlador para ver ingredientes 
 export async function verIngredientes_controller(req, res) {
     try {
         const nombreReceta = req.params.nombre;
@@ -95,6 +109,7 @@ export async function verIngredientes_controller(req, res) {
     }
 }
 
+// Controlador para la eliminación de un ingrediente 
 export async function eliminarIngrediente_controller(req, res) {
     try {
         const nombreReceta = req.params.nombre;
@@ -106,6 +121,7 @@ export async function eliminarIngrediente_controller(req, res) {
     }
 }
 
+// Controlador para la busqueda de ingredientes por receta
 export async function buscarIngredientePorReceta_controller(req, res) {
     try {
         const nombreReceta = req.params.nombre;

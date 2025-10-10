@@ -5,11 +5,17 @@ import routeRecetas from './routes/recetas.routes.js';
 import "dotenv/config"
 import database from './database/connectionDB.js';
 
+// Definición de la apliación de express  
 const app = express();
+
+// Donde usa JSON
 app.use(express.json());
+
+// Se asigna la usabilidad de las rutas
 app.use("/clientes", routeClientes);
 app.use("/recetas", routeRecetas);
 
+// Función para la verificación de la version
 app.get("/:version", (req, res) => {
     const clientVersion = req.params
 

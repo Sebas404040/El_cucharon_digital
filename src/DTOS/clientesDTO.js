@@ -1,5 +1,11 @@
+// Importación de libreria 
 import { param, body } from 'express-validator';
 
+/*
+CREACIÓN DE DTOS (Data Transfer Object) 
+*/
+
+// CrearCliente DTO
 export const crearCliente_DTO = [
     body("nombre").isString().trim().notEmpty().withMessage("Nombre no valido"),
     body("email").isEmail().trim().notEmpty().withMessage("Email invalido"),
@@ -8,6 +14,7 @@ export const crearCliente_DTO = [
     body("activo").isBoolean().withMessage("Activo debe ser un valor true/false")
 ]
 
+// ActualizarCliente DTO
 export const actualizarCliente_DTO = [
     param("nombre").isString().notEmpty().withMessage("El nombre en la URL no puede estar vacío"),
     body("email").optional().isEmail().trim().notEmpty().withMessage("Email invalido"),

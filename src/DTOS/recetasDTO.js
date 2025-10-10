@@ -1,5 +1,11 @@
+// Ipmortación de librerias
 import { param, body } from 'express-validator';
 
+/*
+CREACIÓN DE DTOS (Data Transfer Object) 
+*/
+
+// CrearReceta DTO
 export const crearReceta_DTO = [ 
     body("id_cliente").isMongoId().withMessage("ID de cliente no válido"),
     body("nombre").isString().trim().notEmpty().withMessage("El nombre de la receta no es válido"),
@@ -10,6 +16,7 @@ export const crearReceta_DTO = [
     body("ingredientes.*.cantidad").isString().trim().notEmpty().withMessage("La cantidad del ingrediente no es válida")
 ];
 
+// ActualizarReceta DTO
 export const actualizarReceta_DTO = [
     param("nombre").isString().notEmpty().withMessage("El nombre de la receta en la URL no es válido"),
     body("descripcion").optional().isString().trim().notEmpty().withMessage("La descripción no es válida"),
@@ -19,6 +26,7 @@ export const actualizarReceta_DTO = [
     body("ingredientes.*.cantidad").optional().isString().trim().notEmpty().withMessage("La cantidad del ingrediente no es válida")
 ];
 
+// AgregarIngredientes DTO
 export const agregarIngredientes_DTO = [
     param("nombre").isString().notEmpty().withMessage("El nombre de la receta en la URL no es válido"),
     // Valida que el cuerpo de la petición sea un array con al menos un objeto

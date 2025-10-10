@@ -1,7 +1,10 @@
+// Importación de Router
 import { Router } from "express";
 
+// Se instancia una ruta
 const routeRecetas = Router();
 
+// Importación de controladores
 import {
     crearReceta_controller,
     obtenerRecetas_controller,
@@ -16,9 +19,13 @@ import {
     buscarRecetasPorIngrediente_controller
 } from "../controllers/recetas.controller.js";
 
+// Importación de DTOS
 import { crearReceta_DTO, actualizarReceta_DTO, agregarIngredientes_DTO } from "../DTOS/recetasDTO.js";
+
+// Imortación del validador
 import { ValidationDTO } from "../middlewares/validationDTO.js";
 
+// Importación de la ruta de clientes
 routeRecetas.post("/", crearReceta_DTO, ValidationDTO, crearReceta_controller);
 routeRecetas.get("/", obtenerRecetas_controller);
 routeRecetas.get("/:nombre", obtenerReceta_controller);
@@ -31,5 +38,5 @@ routeRecetas.delete("/:nombre/ingredientes/:nombreIngrediente", eliminarIngredie
 routeRecetas.get("/:nombre/ingredientes/:nombreIngrediente", buscarIngredientePorReceta_controller);
 routeRecetas.get("/ingrediente/:nombreIngrediente", buscarRecetasPorIngrediente_controller);
 
-
+// Exportación de la ruta
 export default routeRecetas;

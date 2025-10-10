@@ -1,6 +1,11 @@
-// Importación de funciones necesarias para la creaci;ón y operación de controladores
+// Importación de funciones necesarias para la creación y operación de controladores
 import { crearCliente, obtenerClientes, obtenerCliente, actualizarCliente, eliminarCliente} from "../services/clientes.services.js";
 
+/*
+CREACIÓN DE CONTROLADORES 
+*/
+
+// Controlador para la obtención de clientes
 export async function obtenerClientes_controller(req, res) {
     try {
         const clientes = await obtenerClientes();
@@ -10,6 +15,7 @@ export async function obtenerClientes_controller(req, res) {
     }
 }
 
+// Controlador para la obtención de un cliente
 export async function obtenerCliente_controller(req, res) {
    try {
         const nombre = req.params.nombre;
@@ -20,6 +26,7 @@ export async function obtenerCliente_controller(req, res) {
     } 
 }
 
+// Controlador para la creación de un cliente
 export async function crearCliente_controller(req, res) {
     try {
         const datos = req.body;
@@ -30,6 +37,7 @@ export async function crearCliente_controller(req, res) {
     }
 }
 
+// Controlador para la actualización
 export async function actualizarCliente_controller(req, res) {
     try {
         const nombre = req.params.nombre;
@@ -41,6 +49,7 @@ export async function actualizarCliente_controller(req, res) {
     }
 }
 
+// Controlador para la eliminación de un cliente
 export async function eliminarCliente_controller(req, res) {
     try {
         const nombre = req.params.nombre;
