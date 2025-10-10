@@ -1,4 +1,4 @@
-// Importaci;ón de funciones necesarias para la creaci;ón y operación de controladores
+// Importación de funciones necesarias para la creaci;ón y operación de controladores
 import { crearCliente, obtenerClientes, obtenerCliente, actualizarCliente, eliminarCliente} from "../services/clientes.services.js";
 
 export async function obtenerClientes_controller(req, res) {
