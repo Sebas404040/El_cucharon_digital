@@ -1,4 +1,4 @@
-import { crearReceta, obtenerRecetas, obtenerReceta, actualizarReceta, eliminarReceta, obtenerRecetasPorCliente} from "../services/recetas.services.js";
+import { crearReceta, obtenerRecetas, obtenerReceta, actualizarReceta, eliminarReceta, obtenerRecetasPorCliente, agregarIngredientes, verIngredientes, eliminarIngrediente, buscarIngredientePorReceta, buscarRecetasPorIngrediente } from "../services/recetas.services.js";
 
 export async function crearReceta_controller(req, res) {
     try {
@@ -44,6 +44,27 @@ export async function actualizarReceta_controller(req, res) {
     }
 }
 
+export async function agregarIngredientes_controller(req, res) {
+    try {
+        const nombreReceta = req.params.nombre;
+        const nuevosIngredientes = req.body;
+        const resultado = await agregarIngredientes(nombreReceta, nuevosIngredientes);
+        res.status(200).json(resultado);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export async function buscarRecetasPorIngrediente_controller(req, res) {
+    try {
+        const nombreIngrediente = req.params.nombreIngrediente;
+        const recetas = await buscarRecetasPorIngrediente(nombreIngrediente);
+        res.status(200).json(recetas);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 export async function eliminarReceta_controller(req, res) {
     try {
         const nombre = req.params.nombre
@@ -61,5 +82,37 @@ export async function obtenerRecetasPorCliente_controller(req, res) {
         res.status(200).json(recetas)
     } catch (error) {
         res.status(404).json({message: error.message});
+    }
+}
+
+export async function verIngredientes_controller(req, res) {
+    try {
+        const nombreReceta = req.params.nombre;
+        const ingredientes = await verIngredientes(nombreReceta);
+        res.status(200).json(ingredientes);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export async function eliminarIngrediente_controller(req, res) {
+    try {
+        const nombreReceta = req.params.nombre;
+        const nombreIngrediente = req.params.nombreIngrediente;
+        const resultado = await eliminarIngrediente(nombreReceta, nombreIngrediente);
+        res.status(200).json(resultado);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export async function buscarIngredientePorReceta_controller(req, res) {
+    try {
+        const nombreReceta = req.params.nombre;
+        const nombreIngrediente = req.params.nombreIngrediente;
+        const ingrediente = await buscarIngredientePorReceta(nombreReceta, nombreIngrediente);
+        res.status(200).json(ingrediente);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
     }
 }
