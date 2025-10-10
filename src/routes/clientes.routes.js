@@ -17,7 +17,7 @@ import { ValidationDTO } from '../middlewares/validationDTO.js';
 routeClientes.get('/', obtenerClientes_controller);
 routeClientes.get('/:nombre', obtenerCliente_controller);
 routeClientes.post('/', crearCliente_DTO, ValidationDTO, crearCliente_controller);
-routeClientes.put('/:nombre', actualizarCliente_DTO, ValidationDTO, actualizarCliente_controller);
+routeClientes.patch('/:nombre', actualizarCliente_DTO, ValidationDTO, actualizarCliente_controller);
 routeClientes.delete('/:nombre', eliminarCliente_controller);
 
 export default routeClientes;
