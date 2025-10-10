@@ -18,3 +18,11 @@ export const actualizarReceta_DTO = [
     body("ingredientes.*.nombre").optional().isString().trim().notEmpty().withMessage("El nombre del ingrediente no es válido"),
     body("ingredientes.*.cantidad").optional().isString().trim().notEmpty().withMessage("La cantidad del ingrediente no es válida")
 ];
+
+export const agregarIngredientes_DTO = [
+    param("nombre").isString().notEmpty().withMessage("El nombre de la receta en la URL no es válido"),
+    // Valida que el cuerpo de la petición sea un array con al menos un objeto
+    body().isArray({ min: 1 }).withMessage("El cuerpo de la petición debe ser un array de ingredientes"),
+    body("*.nombre").isString().trim().notEmpty().withMessage("El nombre del ingrediente no es válido"),
+    body("*.cantidad").isString().trim().notEmpty().withMessage("La cantidad del ingrediente no es válida")
+];
