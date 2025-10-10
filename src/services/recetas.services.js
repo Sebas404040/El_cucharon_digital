@@ -32,10 +32,9 @@ export async function obtenerReceta(nombre) {
 export async function actualizarReceta(nombre, datos) {
     const collection = await database.getCollection(COLECCION_RECETAS);
 
-    // Eliminar el campo _id del objeto de datos para evitar el error de campo inmutable.
+    
     delete datos._id;
 
-    // Si se está actualizando el id_cliente, también debe convertirse a ObjectId.
     if (datos.id_cliente) {
         datos.id_cliente = new ObjectId(datos.id_cliente);
     }
@@ -55,5 +54,63 @@ export async function obtenerRecetasPorCliente(id_cliente) {
     const collection = await database.getCollection(COLECCION_RECETAS);
     const recetas = await collection.find({id_cliente: new ObjectId(id_cliente)}).toArray();
     if (recetas.length === 0) throw new Error("No se encontraron recetas para el cliente especificado");
+    return recetas;
+}
+
+export async function agregarIngredientes(nombreReceta, nuevosIngredientes) {
+    const collection = await database.getCollection(COLECCION_RECETAS);
+    const resultado = await collection.updateOne(
+        { nombre: nombreReceta },
+        { $push: { ingredientes: { $each: nuevosIngredientes } } }
+    );
+    if (resultado.matchedCount === 0) throw new Error("Receta no encontrada para agregar ingredientes");
+    return { message: "Ingredientes agregados con éxito" };
+}
+
+export async function verIngredientes(nombreReceta) {
+    const collection = await database.getCollection(COLECCION_RECETAS);
+    const receta = await collection.findOne({ nombre: nombreReceta });
+    if (!receta) throw new Error("Receta no encontrada");
+    return receta.ingredientes;
+}
+
+export async function eliminarIngrediente(nombreReceta, nombreIngrediente) {
+    const collection = await database.getCollection(COLECCION_RECETAS);
+    const resultado = await collection.updateOne(
+        { nombre: nombreReceta },
+        { $pull: { ingredientes: { nombre: nombreIngrediente } } }
+    );
+    if (resultado.matchedCount === 0) {
+        throw new Error("Receta no encontrada");
+    }
+    if (resultado.modifiedCount === 0) {
+        throw new Error("No se pudo eliminar el ingrediente. Verifique que la receta y el ingrediente existan.");
+    }
+    return { message: "Ingrediente eliminado con éxito" };
+}
+
+export async function buscarIngredientePorReceta(nombreReceta, nombreIngrediente) {
+    const collection = await database.getCollection(COLECCION_RECETAS)
+    const receta = await collection.findOne(
+        { nombre: nombreReceta },
+        { 
+            projection: { 
+                ingredientes: { $elemMatch: { nombre: nombreIngrediente } }
+            } 
+        }
+    );
+    if (!receta || !receta.ingredientes || receta.ingredientes.length === 0) {
+        throw new Error("Ingrediente no encontrado en la receta especificada.");
+    }
+    return receta.ingredientes[0];
+}
+
+export async function buscarRecetasPorIngrediente(nombreIngrediente) {
+    const collection = await database.getCollection(COLECCION_RECETAS);
+    const recetas = await collection.find({ 'ingredientes.nombre': nombreIngrediente }).toArray();
+
+    if (recetas.length === 0) {
+        throw new Error(`No se encontraron recetas que contengan el ingrediente: ${nombreIngrediente}`);
+    }
     return recetas;
 }
