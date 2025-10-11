@@ -47,17 +47,26 @@ semver no es una librería en sí, sino una especificación (Versionado Semánti
 
 Función principal: Proporciona un conjunto estricto de reglas sobre cómo asignar y aumentar los números de versión (Mayor.Menor.Parche - ej. 1.2.3), permitiendo a los desarrolladores y gestores de paquetes entender el impacto de la actualización de una dependencia (si es un arreglo de errores no disruptivo, una nueva característica compatible, o un cambio que rompe la compatibilidad).
 
-## ENDPOINTS implementados
+## 🔗 ENDPOINTS implementados
 
 El desarrollo de la API o aplicación se centró en la creación de una serie de endpoints (rutas de acceso HTTP) diseñados para manejar las operaciones completas de gestión (CRUD: Crear, Leer, Actualizar, Eliminar) para tres entidades principales del sistema: usuarios, recetas e ingredientes.
 
 A continuación, se detalla la expansión de las funcionalidades implementadas por cada conjunto de endpoints:
 
-## Crear cliente
+### Crear cliente
 
-**POST: localhost:4000/clientes**
+Este endpoint se utiliza para registrar un nuevo cliente en el sistema.
 
-JSON de req:
+**Método:** POST
+
+**Ruta:** localhost:4000/clientes
+
+**Funcionalidad:**
+
+Este es un endpoint de creación (parte de las operaciones CRUD). Recibe un cuerpo de solicitud (Request Body) en formato JSON con la información del nuevo cliente y la persiste (guarda) en la base de datos de la aplicación.
+
+
+**JSON de req:**
 
 ```json
 {
@@ -69,11 +78,21 @@ JSON de req:
 }
 ```
 
-## Obtener todos los clientes
+<hr>
 
-**GET: localhost:4000/clientes**
+### Obtener todos los clientes
 
-JSON de res:
+Este endpoint se utiliza para recuperar la lista completa de todos los clientes registrados en el sistema.
+
+**Método:** GET (Solicitud de lectura de datos)
+
+**Ruta:** localhost:4000/clientes
+
+**Funcionalidad**:
+
+Este es un endpoint de lectura masiva. Cuando se realiza una solicitud GET a esta ruta, el servidor consulta la base de datos y devuelve un array JSON que contiene los datos de todos los clientes almacenados, sin necesidad de parámetros de entrada.
+
+**JSON de res:**
 
 ```json
 [
@@ -104,11 +123,19 @@ JSON de res:
 ]
 ```
 
-## Consultar un cliente
+<hr>
 
-**localhost:4000/clientes/Joan Sebastian Gomez Serrano**
+### Consultar un cliente
 
-JSON de res:
+Este endpoint está diseñado para recuperar y mostrar los detalles completos de un único cliente utilizando su nombre como identificador.
+
+**Método:** GET (Solo lectura de datos).
+
+**Ruta:** localhost:4000/clientes/:nombre
+
+**Funcionalidad**:
+
+El servidor procesa la solicitud tomando el nombre completo del cliente de la URL (Joan Sebastian Gomez Serrano) y busca el registro coincidente en la base de datos. Si se encuentra un cliente con ese nombre, el sistema devuelve todos sus datos en formato JSON.
 
 ```json
 {
@@ -120,11 +147,19 @@ JSON de res:
 }
 ```
 
-## Actualizar un cliente
+<hr>
 
-**localhost:4000/clientes/Joan Sebastian Gomez Serrano**
+### Actualizar un cliente
 
-JSON de req:
+**Método** PUT o PATCH (El uso de PUT o PATCH depende de si actualiza el recurso completo o solo algunos campos, pero ambos se usan para modificación de datos).
+
+**Ruta:** localhost:4000/clientes/:nombre
+
+**Funcionalidad:**
+
+El sistema identifica al cliente mediante el nombre completo proporcionado en la URL (Joan Sebastian Gomez Serrano). Luego, toma los campos proporcionados en el cuerpo de la solicitud (Request Body) y sobrescribe o modifica esos valores en el registro de la base de datos para el cliente encontrado. En el ejemplo, se está cambiando el email y el estado de la cuenta a activo: false.
+
+**JSON de req:**
 
 ```json
 {
@@ -132,10 +167,10 @@ JSON de req:
     "telefono": "3052349000",
     "fechaRegistro": "2025-06-09T00:00:00.000Z",
     "activo": false
-
+}
 ```
 
-JSON de res:
+**JSON de res:**
 
 ```json
 {
@@ -143,11 +178,19 @@ JSON de res:
 }
 ```
 
-## Eliminar un cliente
+<hr>
 
-[**localhost:4000/clientes/John](http://localhost:4000/clientes/John) Doe**
+### Eliminar un cliente
 
-JSON de req:
+**Método** DELETE (Método estándar para eliminar recursos).
+
+**Ruta:** localhost:4000/clientes/:nombre
+
+**Funcionalidad**:
+
+El sistema procesa la solicitud tomando el nombre completo del cliente de la URL (John Doe). Luego, busca el registro coincidente en la base de datos y lo elimina. Tras una eliminación exitosa, el servidor devuelve un mensaje de confirmación.
+
+**JSON de req:**
 
 ```json
 {
@@ -157,11 +200,19 @@ JSON de req:
 
 ---
 
-## Crear una receta
+### Crear una receta
 
-POST: localhost:4000/recetas
+Este endpoint se utiliza para registrar una nueva receta en el sistema y asociarla a un cliente existente.
 
-JSON de req:
+**Método:** POST (Método estándar para crear un nuevo recurso).
+
+**Ruta:** localhost:4000/recetas
+
+**Funcionalidad**:
+
+Este es el endpoint de creación para el recurso de Recetas. Recibe un objeto JSON en el cuerpo de la solicitud con todos los detalles necesarios para la receta, incluyendo una referencia al cliente que la está creando (id_cliente). El servidor procesa estos datos, realiza las validaciones necesarias y guarda la nueva receta en la base de datos.
+
+**JSON de req:**
 
 ```json
 {
@@ -177,7 +228,7 @@ JSON de req:
 }
 ```
 
-JSON de res:
+**JSON de res:**
 
 ```json
 {
@@ -185,11 +236,19 @@ JSON de res:
 }
 ```
 
-## Consultar recetas
+<hr>
 
-GET: localhost:4000/recetas
+### Consultar recetas
 
-JSON de res:
+Este endpoint se utiliza para recuperar la colección completa de todas las recetas disponibles en el sistema.
+
+**Método:** GET (Solo lectura de datos, no modifica el servidor).
+
+**Ruta:** localhost:4000/recetas
+
+**Funcionalidad**:
+
+El sistema procesa la solicitud GET a esta ruta y realiza una consulta a la base de datos para obtener todos los registros de recetas. Devuelve un array JSON donde cada elemento contiene la información detallada de una receta, incluyendo sus ingredientes. Este endpoint sirve como el principal punto de acceso al catálogo de recetas.
 
 ```json
 [
@@ -246,11 +305,13 @@ JSON de res:
 ]
 ```
 
-## Consultar una receta
+<hr>
 
-GET: localhost:4000/recetas/Pasta Carbonara Auténtica
+### Consultar una receta
 
-JSON de res:
+**GET: localhost:4000/recetas/Pasta Carbonara Auténtica**
+
+**JSON de res:**
 
 ```json
 {
@@ -284,11 +345,19 @@ JSON de res:
 }
 ```
 
-## Actualizar una receta
+<hr>
 
-PATCH: localhost:4000/recetas/Pasta Carbonara Auténtica
+### Actualizar una receta
 
-JSON de req:
+Este endpoint se utiliza para modificar los datos principales de una receta específica que ya está registrada en el sistema.
+
+**Método:** PATCH (Indica una actualización parcial de los recursos).
+
+**Ruta:** localhost:4000/recetas/:nombre
+
+**Funcionalidad**:
+
+El sistema identifica la receta a modificar mediante el nombre proporcionado en la URL (Pasta Carbonara Auténtica). Luego, toma el objeto JSON del cuerpo de la solicitud (Request Body) y aplica los cambios a los campos correspondientes en el registro de la receta en la base de datos. En el ejemplo, se están actualizando varios detalles de la receta, incluyendo las cantidades de los ingredientes (por ejemplo, Spaghetti cambia de 400g a 500g).
 
 ```json
 {
@@ -322,7 +391,7 @@ JSON de req:
 }
 ```
 
-JSON de res:
+**JSON de res:**
 
 ```json
 {
@@ -330,11 +399,18 @@ JSON de res:
 }
 ```
 
-## Eliminar una receta
+<hr>
 
-DELETE: localhost:4000/recetas/Pasta Carbonara Auténtica
+### Eliminar una receta
 
-JSON de res:
+Este endpoint se utiliza para remover definitivamente una receta específica del catálogo de la aplicación.
+
+**Método:** DELETE (Método estándar para la eliminación de recursos).
+
+**Ruta:** localhost:4000/recetas/:nombre
+
+**Funcionalidad:**
+El sistema procesa la solicitud DELETE e identifica la receta a través del nombre proporcionado en la URL (Pasta Carbonara Auténtica). Una vez localizada en la base de datos, el registro de la receta es eliminado permanentemente. Si la operación es exitosa, el servidor confirma la acción con un mensaje.
 
 ```json
 {
@@ -342,11 +418,19 @@ JSON de res:
 }
 ```
 
-## Mostrar clientes que tienen recetas
+<hr>
 
-GET: localhost:4000/recetas/cliente/68e84fb46693c4ef142cbbf7
+### Mostrar clientes que tienen recetas
 
-JSON de res:
+Este endpoint se utiliza para recuperar todas las recetas que han sido creadas y publicadas por un cliente específico, identificado mediante su ID.
+
+**Método:** GET (Solicitud de lectura de datos, no modifica el servidor).
+
+**Ruta:** localhost:4000/recetas/cliente/:id_cliente
+
+**Funcionalidad:**
+
+El sistema realiza una consulta filtrada a la colección de recetas, utilizando el id_cliente proporcionado en la URL como el criterio de búsqueda. El servidor devuelve un array JSON que contiene todas las recetas donde el campo id_cliente coincide con el valor de la URL (68e84fb46693c4ef142cbbf7 en el ejemplo), permitiendo así ver el catálogo de un autor particular.
 
 ```json
 [
@@ -411,11 +495,19 @@ JSON de res:
 ]
 ```
 
-## Agregar ingredientes a una receta existente
+<hr>
 
-PATCH: localhost:4000/recetas/Brownies de Chocolate Oscuro/ingredientes
+### Agregar ingredientes a una receta existente
 
-JSON de req:
+Este endpoint se utiliza para consultar y obtener la lista completa de todos los ingredientes asociados a una receta específica.
+
+**Método:** GET (Método estándar para la lectura de datos).
+
+**Ruta:** localhost:4000/recetas/:nombre/ingredientes
+
+**Funcionalidad**:
+
+El sistema identifica la receta utilizando su nombre en la URL (Brownies de Chocolate Oscuro). Luego, consulta la base de datos para extraer y devolver el array completo de ingredientes que componen dicha receta, incluyendo las cantidades especificadas.
 
 ```json
 [
@@ -430,7 +522,7 @@ JSON de req:
 ]
 ```
 
-JSON de res: 
+**JSON de res:** 
 
 ```json
 {
@@ -438,11 +530,19 @@ JSON de res:
 }
 ```
 
-## Ver ingredientes de una receta
+<hr>
 
-GET: localhost:4000/recetas/Brownies de Chocolate Oscuro/ingredientes
+### Ver ingredientes de una receta
 
-JSON de res:
+Este endpoint se utiliza para consultar y recuperar exclusivamente la lista de ingredientes asociados a una receta específica, sin devolver el resto de los detalles de la receta (descripción, nivel, etc.).
+
+**Método:** GET (Lectura de datos).
+
+**Ruta:** localhost:4000/recetas/:nombre/ingredientes
+
+**Funcionalidad:**
+
+El sistema identifica la receta deseada a través del nombre proporcionado en la URL (Brownies de Chocolate Oscuro). Luego, realiza una consulta a la base de datos para extraer únicamente el campo de ingredientes de ese registro de receta. El resultado es un array JSON que lista cada ingrediente junto con su cantidad requerida.
 
 ```json
 [
@@ -477,14 +577,28 @@ JSON de res:
 ]
 ```
 
-## Eliminar ingredientes de una receta
+<hr>
 
-GET: localhost:4000/recetas/Brownies de Chocolate Oscuro/ingredientes
+### Eliminar ingredientes de una receta
 
-JSON de res:
+Este endpoint se utiliza para remover uno o más ingredientes específicos de la lista de ingredientes de una receta existente.
+
+**Método HTTP:** (Asumiendo) DELETE (El método GET que proporcionaste no es estándar para esta acción).
+
+**Ruta:** localhost:4000/recetas/:nombre/ingredientes
+
+**Funcionalidad:**
+
+El sistema identifica la receta mediante el nombre en la URL (Brownies de Chocolate Oscuro). Luego, basándose en la información que se espera en el cuerpo de la solicitud (aunque no se proporcionó, probablemente contendría el nombre o ID del ingrediente a eliminar), el sistema retira dicho ingrediente de la lista anidada dentro de la receta en la base de datos.
+
+**JSON de res:**
 
 ```json
 {
     "message": "Ingrediente eliminado con éxito"
 }
 ```
+
+## 🧑‍🦱 Autor
+
+- **Joan Sebastián Gómez Serrano**
