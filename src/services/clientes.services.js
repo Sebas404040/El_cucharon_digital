@@ -62,6 +62,9 @@ export async function actualizarCliente(nombre, datos) {
     // Se obtiene la colecci;ón
     const collection = await database.getCollection(COLECCION_CLIENTES);
 
+    // Se elimina el campo _id de los datos para evitar el error de campo inmutable.
+    delete datos._id;
+
     // Se captura el resultado al realizar la actualización
     const resultado = await collection.updateOne({nombre: nombre}, {$set: datos});
 

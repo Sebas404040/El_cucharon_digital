@@ -599,6 +599,14 @@ El sistema identifica la receta mediante el nombre en la URL (Brownies de Chocol
 }
 ```
 
+## 🎥 Video Explicativo
+
+> Mira el video explicativo del proyecto en Google Drive:
+>
+> [🔗 Ver Video Explicativo](https://drive.google.com/file/d/1iIuBfEkwYkX_AIS4L4j0RBPlhXc5PVZs/view?usp=sharing)
+
+---
+
 ## 🧑‍🦱 Autor
 
 - **Joan Sebastián Gómez Serrano**
